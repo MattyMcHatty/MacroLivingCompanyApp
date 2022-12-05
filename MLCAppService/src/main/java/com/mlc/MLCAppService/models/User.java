@@ -77,4 +77,26 @@ public class User {
     public void setMealPlan(List<Recipe> mealPlan) {
         this.mealPlan = mealPlan;
     }
+
+    public void addToFavourites(Recipe recipe) {
+        this.favouriteRecipes.add(recipe);
+    }
+
+    public void removeFromFavourites(Recipe recipe) {
+        this.favouriteRecipes.remove(recipe);
+    }
+
+    public void addToMealPlan(Recipe recipe) {
+        if(mealPlan.size() < 3){
+            this.mealPlan.add(recipe);
+        }
+    }
+
+    public void removeFromMealPlan(Recipe recipe) {
+        this.mealPlan.remove(recipe);
+    }
+
+    public void clearMealPlan() {
+        this.mealPlan.clear();
+    }
 }
