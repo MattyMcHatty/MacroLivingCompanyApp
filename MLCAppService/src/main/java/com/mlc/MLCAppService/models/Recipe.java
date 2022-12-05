@@ -16,10 +16,8 @@ public class Recipe {
     @Column(name = "name")
     private String name;
 //    @JsonBackReference
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
-//    private HashMap<Ingredient, Double> ingredients;
-    @MapKey(name = "ingredient_id")
-    private Map<Double, Ingredient> ingredients;
+    private List<Ingredient> ingredients;
+    private List<Double> weights;
 
     @Column(name = "steps")
     private List<String> steps;
@@ -31,7 +29,8 @@ public class Recipe {
 
     public Recipe(String name) {
         this.name = name;
-        this.ingredients = new HashMap<>();
+        this.ingredients = new ArrayList<>();
+        this.weights = new ArrayList<>();
         this.steps = new ArrayList<>();
         this.favourite = false;
         this.user = new User();
@@ -47,11 +46,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public HashMap<Ingredient, Double> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(HashMap<Ingredient, Double> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -71,9 +70,12 @@ public class Recipe {
         this.favourite = favourite;
     }
 
-    public void addIngredient(Ingredient ingredient, double weight) {
-        ingredients.put(ingredient, weight);
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
 
+    public void addWeight(double weight){
+        weights.add(weight);
     }
 
     public void addStep(String step) {
@@ -82,40 +84,45 @@ public class Recipe {
 
     public double calculateProtein() {
         double runningTotal = 0;
-        for(Map.Entry<Ingredient, Double> set: ingredients.entrySet()){
-            runningTotal += (set.getKey().getProtein() /100 * set.getValue());
+        for(int i = 0; i < ingredients.size(); i++){
+            double weight = this.weights.get(i);
+            runningTotal += (ingredients.get(i).getProtein() /100 * weight);
         }
         return runningTotal;
     }
 
     public double calculateCarbs() {
         double runningTotal = 0;
-        for(Map.Entry<Ingredient, Double> set: ingredients.entrySet()){
-            runningTotal += (set.getKey().getCarbs() /100 * set.getValue());
+        for(int i = 0; i < ingredients.size(); i++){
+            double weight = this.weights.get(i);
+            runningTotal += (ingredients.get(i).getCarbs() /100 * weight);
         }
         return runningTotal;
     }
 
     public double calculateFat() {
         double runningTotal = 0;
-        for(Map.Entry<Ingredient, Double> set: ingredients.entrySet()){
-            runningTotal += (set.getKey().getFat() /100 * set.getValue());
+        for(int i = 0; i < ingredients.size(); i++){
+            double weight = this.weights.get(i);
+            runningTotal += (ingredients.get(i).getFat() /100 * weight);
         }
         return runningTotal;
     }
 
     public double calculateFibre() {
         double runningTotal = 0;
-        for(Map.Entry<Ingredient, Double> set: ingredients.entrySet()){
-            runningTotal += (set.getKey().getFibre() /100 * set.getValue());
+        for(int i = 0; i < ingredients.size(); i++){
+            double weight = this.weights.get(i);
+            runningTotal += (ingredients.get(i).getFibre() /100 * weight);
         }
         return runningTotal;
     }
 
     public double calculateTotalCalories() {
         double runningTotal = 0;
-        for(Map.Entry<Ingredient, Double> set: ingredients.entrySet()){
-            runningTotal += (set.getKey().calculateTotalCalories() /100 * set.getValue());
+        for(int i = 0; i < ingredients.size(); i++){
+            double weight = this.weights.get(i);
+            runningTotal += (ingredients.get(i).calculateTotalCalories() /100 * weight);
         }
         return runningTotal;
 
@@ -128,7 +135,6 @@ public class Recipe {
         macros.put("fat", calculateFat());
         macros.put("fibre", calculateFibre());
         macros.put("calories", calculateTotalCalories());
-
         return macros;
     }
 
@@ -138,5 +144,21 @@ public class Recipe {
         } else {
             this.favourite = true;
         }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Double> getWeights() {
+        return weights;
+    }
+
+    public void setWeights(List<Double> weights) {
+        this.weights = weights;
     }
 }

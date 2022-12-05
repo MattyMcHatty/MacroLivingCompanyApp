@@ -38,10 +38,10 @@ public class DataLoader implements ApplicationRunner {
         Recipe bacSalad = new Recipe("BAC Salad");
         recipeRepository.save(bacSalad);
 
-        bacSalad.addIngredient(bacon, 20);
-        bacSalad.addIngredient(apple, 50);
-        bacSalad.addIngredient(cashews, 10);
-        recipeRepository.save(bacSalad);
+//        bacSalad.addIngredient(bacon, 20);
+//        bacSalad.addIngredient(apple, 50);
+//        bacSalad.addIngredient(cashews, 10);
+//        recipeRepository.save(bacSalad);
 
         User user = new User();
         userRepository.save(user);
