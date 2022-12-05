@@ -87,7 +87,31 @@ public class Ingredient {
         isVegetarian = vegetarian;
     }
 
-    public double calculateProtein() {
+    public double calculateProteinCalories() {
         return this.protein * 4;
+    }
+
+    public double calculateCarbsCalories() {
+        return this.carbs * 4;
+    }
+
+    public double calculateFatCalories() {
+        return this.fat * 9;
+    }
+
+    public double calculateFibreCalories() {
+        return this.fibre * 2;
+    }
+
+    public double calculateTotalCalories() {
+        return calculateProteinCalories() + calculateCarbsCalories() + calculateFatCalories() +calculateFibreCalories();
+    }
+
+    public void updateIsSelected() {
+        if(isSelected){
+            this.isSelected = false;
+        } else {
+            this.isSelected = true;
+        }
     }
 }
