@@ -1,15 +1,32 @@
 package com.mlc.MLCAppService.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "protein")
     private double protein;
+    @Column(name = "carbs")
     private double carbs;
+    @Column(name = "fat")
     private double fat;
+    @Column(name = "fibre")
     private double fibre;
+    @Column(name = "calories")
     private double calories;
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Recipe> favouriteRecipes;
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Recipe> mealPlan;
 
     public User() {

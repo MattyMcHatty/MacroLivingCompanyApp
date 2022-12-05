@@ -1,22 +1,43 @@
 package com.mlc.MLCAppService.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Entity
+@Table(name = "recipes")
 public class Recipe {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name")
     private String name;
-    private HashMap<Ingredient, Double> ingredients;
+//    @JsonBackReference
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+//    private HashMap<Ingredient, Double> ingredients;
+    @MapKey(name = "ingredient_id")
+    private Map<Double, Ingredient> ingredients;
+
+    @Column(name = "steps")
     private List<String> steps;
+    @Column(name = "favourite")
     private boolean favourite;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
     public Recipe(String name) {
         this.name = name;
         this.ingredients = new HashMap<>();
         this.steps = new ArrayList<>();
         this.favourite = false;
+        this.user = new User();
     }
+
+    public Recipe(){}
 
     public String getName() {
         return name;

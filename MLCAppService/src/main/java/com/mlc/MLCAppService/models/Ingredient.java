@@ -1,16 +1,34 @@
 package com.mlc.MLCAppService.models;
 
-public class Ingredient {
-    private String name;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "ingredients")
+public class Ingredient {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "name")
+    private String name;
     // protein, carbs, fat, fibre are per 100 grams.
+    @Column(name = "protein")
     private double protein;
+    @Column(name = "carbs")
     private double carbs;
+    @Column(name = "fat")
     private double fat;
+    @Column(name = "fibre")
     private double fibre;
+    @Column(name = "isSelected")
     private boolean isSelected;
+    @Column(name = "isVegan")
     private boolean isVegan;
+    @Column(name = "isVegetarian")
     private boolean isVegetarian;
+    //Many ingredients can go into one recipe but dont need to go into all recipes
+    @ManyToOne
+    @JoinColumn(name="recipe_id", nullable=false)
+    private Recipe recipe;
 
     public Ingredient(String name, double protein, double carbs, double fat, double fibre, boolean isVegan, boolean isVegetarian) {
         this.name = name;
@@ -21,7 +39,10 @@ public class Ingredient {
         this.isSelected = false;
         this.isVegan = isVegan;
         this.isVegetarian = isVegetarian;
+        this.recipe = new Recipe();
     }
+
+    private Ingredient(){}
 
     public String getName() {
         return name;
