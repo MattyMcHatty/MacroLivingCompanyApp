@@ -37,7 +37,6 @@ public class Recipe {
     private Steps steps;
     @Column(name = "favourite")
     private boolean favourite;
-    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User user;

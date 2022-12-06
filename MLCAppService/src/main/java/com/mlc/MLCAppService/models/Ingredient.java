@@ -32,6 +32,7 @@ public class Ingredient {
     @Column(name = "isVegetarian")
     private boolean isVegetarian;
     //Many ingredients can go into one recipe but dont need to go into all recipes
+//    @JsonIgnoreProperties({"ingredients"})
     @JsonBackReference
     @ManyToMany
 //    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
