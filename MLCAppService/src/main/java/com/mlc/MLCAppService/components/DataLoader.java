@@ -24,6 +24,7 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     StepsRepository stepsRepository;
 
+
     public DataLoader(){
 
     }
@@ -32,6 +33,9 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         User user = new User();
+        user.setCarbs(10);
+        user.setCalories(12);
+        user.setFat(13);
         userRepository.save(user);
 
         Ingredient bacon = new Ingredient("Bacon",37, 0,41,0,false,false, "per 2 slices", 200.0);
@@ -52,11 +56,11 @@ public class DataLoader implements ApplicationRunner {
         Recipe bacSalad = new Recipe("BAC Salad", bacSaladSteps);
         recipeRepository.save(bacSalad);
 
+
         bacSalad.addIngredient(bacon);
         bacSalad.addIngredient(apple);
         bacSalad.addIngredient(cashews);
         recipeRepository.save(bacSalad);
-
 
 //        bacSalad.addIngredient(bacon, 20);
 //        bacSalad.addIngredient(apple, 50);

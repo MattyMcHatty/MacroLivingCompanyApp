@@ -31,6 +31,7 @@ public class Steps {
     private String step10;
 
     @OneToOne(mappedBy = "steps", cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     private Recipe recipe;
 
     public Steps() {
@@ -46,7 +47,7 @@ public class Steps {
         this.step10 = "";
         this.recipe = new Recipe();
     }
-
+//    public Steps(){}
     public String getStep1() {
         return step1;
     }
@@ -133,5 +134,13 @@ public class Steps {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

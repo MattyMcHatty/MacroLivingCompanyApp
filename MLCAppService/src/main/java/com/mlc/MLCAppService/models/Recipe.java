@@ -1,6 +1,7 @@
 package com.mlc.MLCAppService.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -16,7 +17,9 @@ public class Recipe {
     private Long id;
     @Column(name = "name")
     private String name;
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnoreProperties({"recipes"})
+
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
@@ -29,13 +32,14 @@ public class Recipe {
             }
     )
     private List<Ingredient> ingredients;
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"recipes"})
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "steps_id", referencedColumnName = "id")
     private Steps steps;
     @Column(name = "favourite")
     private boolean favourite;
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id")
     private User user;
 
     public Recipe(String name, Steps steps) {
