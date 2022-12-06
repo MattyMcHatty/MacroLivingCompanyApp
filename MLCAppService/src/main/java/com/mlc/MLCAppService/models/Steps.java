@@ -30,7 +30,7 @@ public class Steps {
     @Column(name = "step10")
     private String step10;
 
-    @OneToOne(mappedBy = "steps")
+    @OneToOne(mappedBy = "steps", cascade = CascadeType.ALL)
     private Recipe recipe;
 
     public Steps() {
@@ -44,8 +44,7 @@ public class Steps {
         this.step8 = "";
         this.step9 = "";
         this.step10 = "";
-
-
+        this.recipe = new Recipe();
     }
 
     public String getStep1() {
@@ -126,5 +125,13 @@ public class Steps {
 
     public void setStep10(String step10) {
         this.step10 = step10;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

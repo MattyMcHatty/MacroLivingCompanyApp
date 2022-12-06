@@ -30,6 +30,10 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+        User user = new User();
+        userRepository.save(user);
+
         Ingredient bacon = new Ingredient("Bacon",37, 0,41,0,false,false, "per 2 slices", 200.0);
         ingredientRepository.save(bacon);
 
@@ -40,6 +44,8 @@ public class DataLoader implements ApplicationRunner {
         ingredientRepository.save(cashews);
 
         Steps bacSaladSteps = new Steps();
+        stepsRepository.save(bacSaladSteps);
+
         bacSaladSteps.setStep1("chop apple");
         stepsRepository.save(bacSaladSteps);
 
@@ -52,7 +58,6 @@ public class DataLoader implements ApplicationRunner {
 //        bacSalad.addIngredient(cashews, 10);
 //        recipeRepository.save(bacSalad);
 
-        User user = new User();
-        userRepository.save(user);
+
     }
 }

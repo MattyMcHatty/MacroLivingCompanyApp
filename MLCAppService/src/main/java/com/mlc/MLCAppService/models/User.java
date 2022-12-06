@@ -26,7 +26,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Recipe> favouriteRecipes;
     @JsonBackReference
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Recipe> mealPlan;
 
     public User() {
@@ -37,6 +37,14 @@ public class User {
         this.calories = 0;
         this.favouriteRecipes = new ArrayList<>();
         this.mealPlan = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getProtein() {

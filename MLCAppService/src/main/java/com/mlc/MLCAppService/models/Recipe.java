@@ -29,7 +29,6 @@ public class Recipe {
             }
     )
     private List<Ingredient> ingredients;
-//    @Column (name="steps")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "steps_id", referencedColumnName = "id")
     private Steps steps;
