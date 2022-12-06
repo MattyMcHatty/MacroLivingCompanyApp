@@ -1,6 +1,12 @@
 package com.mlc.MLCAppService.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ingredients")
@@ -26,11 +32,22 @@ public class Ingredient {
     @Column(name = "isVegetarian")
     private boolean isVegetarian;
     //Many ingredients can go into one recipe but dont need to go into all recipes
-    @ManyToOne
-    @JoinColumn(name="recipe_id", nullable=false)
-    private Recipe recipe;
+    @JsonBackReference
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name="ingredients_recipes",
+            joinColumns = {@JoinColumn(name="ingredient_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name="recipe_id", nullable = false, updatable = false)}
+    )
+    private List<Recipe> recipe;
 
-    public Ingredient(String name, double protein, double carbs, double fat, double fibre, boolean isVegan, boolean isVegetarian) {
+    @Column(name = "quantity")
+    private String quantity;
+    @Column(name = "calories")
+    private Double calories;
+
+    public Ingredient(String name, double protein, double carbs, double fat, double fibre, boolean isVegan, boolean isVegetarian, String quantity, Double calories) {
         this.name = name;
         this.protein = protein;
         this.carbs = carbs;
@@ -39,10 +56,44 @@ public class Ingredient {
         this.isSelected = false;
         this.isVegan = isVegan;
         this.isVegetarian = isVegetarian;
-        this.recipe = new Recipe();
+        this.recipe = new ArrayList<>();
+        this.quantity = quantity;
+        this.calories = calories;
     }
 
     private Ingredient(){}
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Double calories) {
+        this.calories = calories;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Recipe> getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(List<Recipe> recipe) {
+        this.recipe = recipe;
+    }
 
     public String getName() {
         return name;

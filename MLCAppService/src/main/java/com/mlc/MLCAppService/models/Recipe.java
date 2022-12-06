@@ -1,6 +1,7 @@
 package com.mlc.MLCAppService.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,28 +16,46 @@ public class Recipe {
     private Long id;
     @Column(name = "name")
     private String name;
-//    @JsonBackReference
+    @JsonBackReference
+    @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "ingredients_recipes",
+            joinColumns = {
+                    @JoinColumn(name = "recipe_id", nullable = false, updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "ingredient_id", nullable = false, updatable = false)
+            }
+    )
     private List<Ingredient> ingredients;
-    private List<Double> weights;
-
-    @Column(name = "steps")
-    private List<String> steps;
+//    @Column (name="steps")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "steps_id", referencedColumnName = "id")
+    private Steps steps;
     @Column(name = "favourite")
     private boolean favourite;
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    public Recipe(String name) {
+    public Recipe(String name, Steps steps) {
         this.name = name;
         this.ingredients = new ArrayList<>();
-        this.weights = new ArrayList<>();
-        this.steps = new ArrayList<>();
+        this.steps = steps;
         this.favourite = false;
         this.user = new User();
     }
 
     public Recipe(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -54,14 +73,6 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public List<String> getSteps() {
-        return steps;
-    }
-
-    public void setSteps(List<String> steps) {
-        this.steps = steps;
-    }
-
     public boolean isFavourite() {
         return favourite;
     }
@@ -73,70 +84,61 @@ public class Recipe {
     public void addIngredient(Ingredient ingredient) {
         ingredients.add(ingredient);
     }
-
-    public void addWeight(double weight){
-        weights.add(weight);
-    }
-
-    public void addStep(String step) {
-        this.steps.add(step);
-    }
-
-    public double calculateProtein() {
-        double runningTotal = 0;
-        for(int i = 0; i < ingredients.size(); i++){
-            double weight = this.weights.get(i);
-            runningTotal += (ingredients.get(i).getProtein() /100 * weight);
-        }
-        return runningTotal;
-    }
-
-    public double calculateCarbs() {
-        double runningTotal = 0;
-        for(int i = 0; i < ingredients.size(); i++){
-            double weight = this.weights.get(i);
-            runningTotal += (ingredients.get(i).getCarbs() /100 * weight);
-        }
-        return runningTotal;
-    }
-
-    public double calculateFat() {
-        double runningTotal = 0;
-        for(int i = 0; i < ingredients.size(); i++){
-            double weight = this.weights.get(i);
-            runningTotal += (ingredients.get(i).getFat() /100 * weight);
-        }
-        return runningTotal;
-    }
-
-    public double calculateFibre() {
-        double runningTotal = 0;
-        for(int i = 0; i < ingredients.size(); i++){
-            double weight = this.weights.get(i);
-            runningTotal += (ingredients.get(i).getFibre() /100 * weight);
-        }
-        return runningTotal;
-    }
-
-    public double calculateTotalCalories() {
-        double runningTotal = 0;
-        for(int i = 0; i < ingredients.size(); i++){
-            double weight = this.weights.get(i);
-            runningTotal += (ingredients.get(i).calculateTotalCalories() /100 * weight);
-        }
-        return runningTotal;
-
-    }
-
-    public HashMap getMacros() {
-        HashMap<String, Double> macros = new HashMap<>();
-        macros.put("protein", calculateProtein());
-        macros.put("carbs", calculateCarbs());
-        macros.put("fat", calculateFat());
-        macros.put("fibre", calculateFibre());
-        macros.put("calories", calculateTotalCalories());
-        return macros;
-    }
+//    public double calculateProtein() {
+//        double runningTotal = 0;
+//        for(int i = 0; i < ingredients.size(); i++){
+//            double weight = this.weights.get(i);
+//            runningTotal += (ingredients.get(i).getProtein() /100 * weight);
+//        }
+//        return runningTotal;
+//    }
+//
+//    public double calculateCarbs() {
+//        double runningTotal = 0;
+//        for(int i = 0; i < ingredients.size(); i++){
+//            double weight = this.weights.get(i);
+//            runningTotal += (ingredients.get(i).getCarbs() /100 * weight);
+//        }
+//        return runningTotal;
+//    }
+//
+//    public double calculateFat() {
+//        double runningTotal = 0;
+//        for(int i = 0; i < ingredients.size(); i++){
+//            double weight = this.weights.get(i);
+//            runningTotal += (ingredients.get(i).getFat() /100 * weight);
+//        }
+//        return runningTotal;
+//    }
+//
+//    public double calculateFibre() {
+//        double runningTotal = 0;
+//        for(int i = 0; i < ingredients.size(); i++){
+//            double weight = this.weights.get(i);
+//            runningTotal += (ingredients.get(i).getFibre() /100 * weight);
+//        }
+//        return runningTotal;
+//    }
+//
+//    public double calculateTotalCalories() {
+//        double runningTotal = 0;
+//        for(int i = 0; i < ingredients.size(); i++){
+//            double weight = this.weights.get(i);
+//            runningTotal += (ingredients.get(i).calculateTotalCalories() /100 * weight);
+//        }
+//        return runningTotal;
+//
+//    }
+//
+//    public HashMap getMacros() {
+//        HashMap<String, Double> macros = new HashMap<>();
+//        macros.put("protein", calculateProtein());
+//        macros.put("carbs", calculateCarbs());
+//        macros.put("fat", calculateFat());
+//        macros.put("fibre", calculateFibre());
+//        macros.put("calories", calculateTotalCalories());
+//        return macros;
+//    }
 
     public void updateIsFavourite() {
         if(favourite){
@@ -154,11 +156,11 @@ public class Recipe {
         this.user = user;
     }
 
-    public List<Double> getWeights() {
-        return weights;
+    public Steps getSteps() {
+        return steps;
     }
 
-    public void setWeights(List<Double> weights) {
-        this.weights = weights;
+    public void setSteps(Steps steps) {
+        this.steps = steps;
     }
 }
