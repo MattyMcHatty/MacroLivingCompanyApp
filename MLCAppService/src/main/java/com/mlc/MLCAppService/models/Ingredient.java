@@ -34,7 +34,7 @@ public class Ingredient {
     //Many ingredients can go into one recipe but dont need to go into all recipes
     @JsonBackReference
     @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
             name="ingredients_recipes",
             joinColumns = {@JoinColumn(name="ingredient_id", nullable = false, updatable = false)},

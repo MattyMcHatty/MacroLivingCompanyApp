@@ -52,6 +52,11 @@ public class DataLoader implements ApplicationRunner {
         Recipe bacSalad = new Recipe("BAC Salad", bacSaladSteps);
         recipeRepository.save(bacSalad);
 
+        bacSalad.addIngredient(bacon);
+        bacSalad.addIngredient(apple);
+        bacSalad.addIngredient(cashews);
+        recipeRepository.save(bacSalad);
+
 
 //        bacSalad.addIngredient(bacon, 20);
 //        bacSalad.addIngredient(apple, 50);
