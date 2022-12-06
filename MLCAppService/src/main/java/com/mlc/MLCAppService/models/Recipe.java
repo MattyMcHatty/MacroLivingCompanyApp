@@ -18,8 +18,7 @@ public class Recipe {
     @Column(name = "name")
     private String name;
 //    @JsonBackReference
-    @JsonIgnoreProperties({"recipes"})
-
+//    @JsonBackReference
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(
@@ -32,12 +31,13 @@ public class Recipe {
             }
     )
     private List<Ingredient> ingredients;
-    @JsonIgnoreProperties({"recipes"})
+    @JsonBackReference
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "steps_id", referencedColumnName = "id")
     private Steps steps;
     @Column(name = "favourite")
     private boolean favourite;
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User user;
@@ -47,7 +47,7 @@ public class Recipe {
         this.ingredients = new ArrayList<>();
         this.steps = steps;
         this.favourite = false;
-        this.user = new User();
+//        this.user = new User();
     }
 
     public Recipe(){}

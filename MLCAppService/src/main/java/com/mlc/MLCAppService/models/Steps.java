@@ -1,5 +1,7 @@
 package com.mlc.MLCAppService.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -29,7 +31,7 @@ public class Steps {
     private String step9;
     @Column(name = "step10")
     private String step10;
-
+    @JsonBackReference
     @OneToOne(mappedBy = "steps", cascade = CascadeType.ALL)
     @JoinColumn(name = "recipe_id", referencedColumnName = "id")
     private Recipe recipe;
@@ -45,7 +47,7 @@ public class Steps {
         this.step8 = "";
         this.step9 = "";
         this.step10 = "";
-        this.recipe = new Recipe();
+//        this.recipe = new Recipe();
     }
 //    public Steps(){}
     public String getStep1() {
